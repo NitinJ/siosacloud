@@ -10,6 +10,6 @@ environ.Env.read_env(ENV_FILE)
 
 DATABASE = {
 	"default": {
-        "url": env.str('MONGO_URL')
+        "url": env.str('MONGO_URL', default='mongodb://localhost:27017')
     }
 }
