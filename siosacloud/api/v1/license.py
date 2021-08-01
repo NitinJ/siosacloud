@@ -57,10 +57,10 @@ async def verfiy_client(body: models.LicenseModel):
         'muid': body.muid
     })
     if record:
-        return {"verified": False}
+        return {"verified": True}
     return JSONResponse(
         {
-            "message": "license_key is invalid"
+            "verified": False
         },
         status_code=status.HTTP_401_UNAUTHORIZED
     )
