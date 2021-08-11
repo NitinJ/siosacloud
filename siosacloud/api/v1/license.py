@@ -17,6 +17,20 @@ async def register_client(body: models.LicenseModel):
     client = await get_db_client()
     db = client.test
     license_key = str(body.license_key)
+    print(license_key)
+    record = await db.license.find_one(
+        {
+            'license_key': license_key,
+            'muid': str(body.muid)
+        }
+    )
+    if record:
+        return JSONResponse(
+            {
+                "message": "Registration Successful"
+            },
+            status_code=HTTP_201_CREATED
+        )
     record = await db.license.find_one(
         {
             'license_key': license_key,
@@ -30,11 +44,12 @@ async def register_client(body: models.LicenseModel):
             },
             status_code=status.HTTP_400_BAD_REQUEST
         )
+
     record = await db.license.update_one(
         {'license_key': license_key},
         {
             "$set": {
-                "muid": body.muid,
+                "muid": str(body.muid),
                 "valid_until": ""
             }
         }
